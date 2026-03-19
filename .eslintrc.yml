@@ -1,0 +1,36 @@
+env:
+  es2021: true
+  node: true
+parser: '@typescript-eslint/parser'
+extends:
+  - standard
+  - eslint:recommended
+  - plugin:@typescript-eslint/recommended
+  - prettier
+  - plugin:@cspell/recommended
+plugins:
+  - '@cspell'
+  - '@typescript-eslint'
+  - prettier
+  - eslint-plugin-import-helpers
+  - import
+rules:
+  semi: ['error', 'never']
+  quotes: ['error', 'single']
+  no-console: 'warn'
+  no-underscore-dangle: ['off']
+  import/prefer-default-export: ['off']
+  max-params: ['warn', 4]
+  import-helpers/order-imports:
+    - warn
+    - newlinesBetween: 'always'
+      groups:
+        - 'module'
+        - '/^@/lib/'
+        - '/^@/core/'
+        - '/^@/services/'
+        - '/^@/shared/'
+        - '/^@/utils/'
+        - ['parent', 'sibling', 'index']
+      alphabetize: { order: 'asc', ignoreCase: true }
+  '@cspell/spellchecker': 'warn'

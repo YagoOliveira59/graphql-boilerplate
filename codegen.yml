@@ -1,0 +1,22 @@
+overwrite: true
+schema: 'src/core/**/*.graphql'
+documents: null
+generates:
+  generated/schema.graphql:
+    plugins:
+      - schema-ast
+  generated/graphql.ts:
+    plugins:
+      - add:
+          content: '/* eslint-disable */'
+      - 'typescript'
+      - 'typescript-resolvers'
+      - 'typescript-mongodb'
+    config:
+      useIndexSignature: true
+      useImplementingTypes: true
+      # TODO: Update the contextType path if you rename the Context type
+      contextType: '@/shared/types#Context'
+      # TODO: Add mappers for your domain entities here:
+      # mappers:
+      #   Example: '@/core/entities/example/model/types#ExampleDocument'

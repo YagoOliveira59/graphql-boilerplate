@@ -1,0 +1,17 @@
+{
+  "entry": [
+    "src/index.ts",
+    "src/core/entities/**/resolvers.ts",
+    "src/core/entities/**/index.ts"
+  ],
+  "project": ["src/**/*.ts"],
+  "ignoreDependencies": [
+    "@graphql-codegen/introspection",
+    "c8",
+    "graphql-middleware",
+    "migrate-mongo",
+    "nodemon",
+    "ts-node",
+    "tsconfig-paths"
+  ]
+}

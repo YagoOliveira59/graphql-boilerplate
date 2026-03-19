@@ -1,0 +1,71 @@
+# ─── Example Entity Schema ───────────────────────────────────────────────────
+# This is a generic template entity. Rename it and adapt the fields to your domain.
+# TODO: Replace "Example" with your entity name throughout this file.
+
+type Query {
+  # List examples with pagination and optional filtering
+  examples(input: ExamplesInput): Examples!
+
+  # Fetch a single example by ID
+  example(id: ID!): Example!
+}
+
+type Mutation {
+  # Create a new example
+  createExample(input: CreateExampleInput!): Example!
+
+  # Update an existing example
+  updateExample(input: UpdateExampleInput!): Example!
+
+  # Delete an example by ID
+  deleteExample(id: ID!): Boolean!
+}
+
+# ─── Input types ──────────────────────────────────────────────────────────────
+
+input ExamplesInput {
+  pagination: PaginationInput
+}
+
+input CreateExampleInput {
+  # TODO: Replace with your entity's required fields
+  name: String!
+  description: String
+  active: Boolean
+}
+
+input UpdateExampleInput {
+  id: ID!
+  # TODO: Replace with your entity's updatable fields
+  name: String
+  description: String
+  active: Boolean
+}
+
+# ─── Output types ─────────────────────────────────────────────────────────────
+
+"Paginated list of examples"
+type Examples {
+  items: [Example!]!
+  total: Int!
+  page: Int!
+  pages: Int!
+}
+
+"A single example entity"
+type Example {
+  id: ID!
+  # TODO: Replace with your entity's fields
+  name: String!
+  description: String
+  active: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+# ─── Shared input types (used across entities) ────────────────────────────────
+
+input PaginationInput {
+  page: Int
+  limit: Int
+}

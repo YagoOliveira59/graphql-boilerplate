@@ -1,0 +1,107 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  # ─── Lint & Type Check ────────────────────────────────────────────────────────
+  lint-and-typecheck:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.14.0'
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9.12.0
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type check
+        run: pnpm ts:check
+
+  # ─── Tests ────────────────────────────────────────────────────────────────────
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        # TODO: Update MongoDB version to match your docker-compose.yml
+        image: mongo:8.0
+        ports:
+          - 27017:27017
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+
+    env:
+      NODE_ENV: test
+      PORT: 4000
+      # TODO: Fill in the test environment variables or use GitHub Secrets
+      MONGODB_URI: mongodb://localhost:27017/graphql-boilerplate-test
+      REDIS_URL: redis://localhost:6379/0
+      GRAPHQL_PLAYGROUND: 'false'
+      LOG_HUMAN: 'false'
+      # Firebase — use a Firebase test project or emulator
+      FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+      FIREBASE_DATABASE_URL: ${{ secrets.FIREBASE_DATABASE_URL }}
+      FIREBASE_USE_DEFAULT_SERVICE_ACCOUNT: 'false'
+      FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
+      FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
+      APP_TOKEN_SECRET: ${{ secrets.APP_TOKEN_SECRET }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.14.0'
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9.12.0
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run tests with coverage
+        run: pnpm test
+
+  # ─── Docker Build ─────────────────────────────────────────────────────────────
+  docker-build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    needs: [lint-and-typecheck, test]
+    # TODO: Configure this to push to your container registry (GCR, ECR, Docker Hub, etc.)
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          target: production
+          push: false # TODO: Set to true and configure registry credentials to push
+          tags: graphql-boilerplate:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

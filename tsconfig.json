@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "es2021",
+    "module": "NodeNext",
+    "lib": ["es2021"],
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strict": true,
+    "moduleResolution": "nodenext",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/generated/*": ["./src/generated/*", "./generated/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "migrations/**/*.ts", "generated/**/*.ts"],
+  "exclude": ["./coverage/**/*", "./node_modules/**/*", "./build/**/*"]
+}

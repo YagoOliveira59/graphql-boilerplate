@@ -1,0 +1,12 @@
+node_modules/
+build/
+dist/
+coverage/
+.git/
+.github/
+*.md
+.env
+config/.env
+generated/
+src/generated/
+.vscode/

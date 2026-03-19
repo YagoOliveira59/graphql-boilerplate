@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json.schemastore.org/swcrc",
+  "exclude": [".*/specs/.*", ".*\\.spec\\.ts$"],
+  "jsc": {
+    "target": "es2021",
+    "parser": {
+      "syntax": "typescript",
+      "decorators": true,
+      "dynamicImport": true
+    },
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/generated/*": ["./src/generated/*", "./generated/*"]
+    }
+  },
+  "module": {
+    "type": "commonjs"
+  }
+}

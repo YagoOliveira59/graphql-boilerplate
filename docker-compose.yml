@@ -1,0 +1,34 @@
+services:
+  # ─── Application ──────────────────────────────────────────────────────────
+  app:
+    build:
+      context: .
+      target: development
+    ports:
+      - 4000:4000
+    volumes:
+      - .:/app
+      - /app/node_modules
+    env_file:
+      - config/.env
+    depends_on:
+      - mongo
+      - redis
+
+  # ─── MongoDB ──────────────────────────────────────────────────────────────
+  mongo:
+    # TODO: Replace with your preferred MongoDB image/version
+    image: mongo:8.0
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - ${MONGODB_PORT:-27017}:27017
+
+  # ─── Redis ────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    ports:
+      - ${REDIS_PORT:-6379}:6379
+
+volumes:
+  mongodb_data: {}
