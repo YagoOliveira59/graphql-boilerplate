@@ -1,5 +1,5 @@
-ARG NODE_VERSION=20.14.0
-ARG OS_FLAVOR=alpine3.19
+ARG NODE_VERSION=24.19.0
+ARG OS_FLAVOR=alpine3.21
 
 # ─── Development stage ────────────────────────────────────────────────────────
 FROM node:${NODE_VERSION}-${OS_FLAVOR} AS development
